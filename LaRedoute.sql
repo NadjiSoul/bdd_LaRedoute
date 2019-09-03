@@ -15,11 +15,38 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-# Database LaRedoute
-# ------------------------------------------------------------
 
 CREATE DATABASE IF NOT EXISTS `LaRedoute` DEFAULT CHARACTER SET = `utf8`;
 USE `LaRedoute`;
+
+--
+-- Table structure for table `adresse_livraison`
+--
+
+DROP TABLE IF EXISTS `adresse_livraison`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `adresse_livraison` (
+  `numero` int(11) NOT NULL,
+  `rue` varchar(255) NOT NULL,
+  `complement_adresse` varchar(255) DEFAULT NULL,
+  `code_postal` int(11) NOT NULL,
+  `ville` varchar(255) NOT NULL,
+  `pays` varchar(255) NOT NULL,
+  `commandes_id` int(11) NOT NULL,
+  KEY `fk_adresse_livraison` (`commandes_id`),
+  CONSTRAINT `fk_adresse_livraison` FOREIGN KEY (`commandes_id`) REFERENCES `commandes` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `adresse_livraison`
+--
+
+LOCK TABLES `adresse_livraison` WRITE;
+/*!40000 ALTER TABLE `adresse_livraison` DISABLE KEYS */;
+/*!40000 ALTER TABLE `adresse_livraison` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `chaussures`
@@ -36,8 +63,8 @@ CREATE TABLE `chaussures` (
   `modele` varchar(255) NOT NULL,
   `pointure` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `pk_marques` (`marques_id`),
-  CONSTRAINT `pk_marques` FOREIGN KEY (`marques_id`) REFERENCES `marques` (`id`)
+  KEY `fk_marques` (`marques_id`),
+  CONSTRAINT `fk_marques` FOREIGN KEY (`marques_id`) REFERENCES `marques` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -83,12 +110,11 @@ DROP TABLE IF EXISTS `commandes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `commandes` (
-  `adresse_livraison` varchar(255) NOT NULL,
   `clients_id` int(11) NOT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`),
-  KEY `pk_clients` (`clients_id`),
-  CONSTRAINT `pk_clients` FOREIGN KEY (`clients_id`) REFERENCES `clients` (`id`)
+  KEY `fk_clients` (`clients_id`),
+  CONSTRAINT `fk_clients` FOREIGN KEY (`clients_id`) REFERENCES `clients` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -112,9 +138,9 @@ CREATE TABLE `commandes_chaussures` (
   `id_commandes` int(11) NOT NULL,
   `id_chaussures` int(11) NOT NULL,
   PRIMARY KEY (`id_commandes`,`id_chaussures`),
-  KEY `pk_chaussures` (`id_chaussures`),
-  CONSTRAINT `pk_chaussures` FOREIGN KEY (`id_chaussures`) REFERENCES `chaussures` (`id`),
-  CONSTRAINT `pk_commandes` FOREIGN KEY (`id_commandes`) REFERENCES `commandes` (`id`)
+  KEY `fk_chaussures` (`id_chaussures`),
+  CONSTRAINT `fk_chaussures` FOREIGN KEY (`id_chaussures`) REFERENCES `chaussures` (`id`),
+  CONSTRAINT `fk_commandes` FOREIGN KEY (`id_commandes`) REFERENCES `commandes` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -159,4 +185,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-09-02 20:42:15
+-- Dump completed on 2019-09-03 22:37:35
