@@ -18,7 +18,6 @@
 
 CREATE DATABASE IF NOT EXISTS `LaRedoute` DEFAULT CHARACTER SET = `utf8`;
 USE `LaRedoute`;
-
 --
 -- Table structure for table `adresse_livraison`
 --
@@ -33,9 +32,8 @@ CREATE TABLE `adresse_livraison` (
   `code_postal` int(11) NOT NULL,
   `ville` varchar(255) NOT NULL,
   `pays` varchar(255) NOT NULL,
-  `commandes_id` int(11) NOT NULL,
-  KEY `fk_adresse_livraison` (`commandes_id`),
-  CONSTRAINT `fk_adresse_livraison` FOREIGN KEY (`commandes_id`) REFERENCES `commandes` (`id`)
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -112,9 +110,12 @@ DROP TABLE IF EXISTS `commandes`;
 CREATE TABLE `commandes` (
   `clients_id` int(11) NOT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `adresse_livraison_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_clients` (`clients_id`),
-  CONSTRAINT `fk_clients` FOREIGN KEY (`clients_id`) REFERENCES `clients` (`id`)
+  KEY `fk_commandesa` (`adresse_livraison_id`),
+  CONSTRAINT `fk_clients` FOREIGN KEY (`clients_id`) REFERENCES `clients` (`id`),
+  CONSTRAINT `fk_commandesa` FOREIGN KEY (`adresse_livraison_id`) REFERENCES `adresse_livraison` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -140,7 +141,7 @@ CREATE TABLE `commandes_chaussures` (
   PRIMARY KEY (`id_commandes`,`id_chaussures`),
   KEY `fk_chaussures` (`id_chaussures`),
   CONSTRAINT `fk_chaussures` FOREIGN KEY (`id_chaussures`) REFERENCES `chaussures` (`id`),
-  CONSTRAINT `fk_commandes` FOREIGN KEY (`id_commandes`) REFERENCES `commandes` (`id`)
+  CONSTRAINT `fk_commandesc` FOREIGN KEY (`id_commandes`) REFERENCES `commandes` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -185,4 +186,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-09-03 22:37:35
+-- Dump completed on 2019-09-03 22:56:10
