@@ -18,6 +18,7 @@
 
 CREATE DATABASE IF NOT EXISTS `LaRedoute` DEFAULT CHARACTER SET = `utf8`;
 USE `LaRedoute`;
+
 --
 -- Table structure for table `adresse_livraison`
 --
@@ -32,8 +33,9 @@ CREATE TABLE `adresse_livraison` (
   `code_postal` int(11) NOT NULL,
   `ville` varchar(255) NOT NULL,
   `pays` varchar(255) NOT NULL,
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`id`)
+  `client_id` int(11) NOT NULL,
+  KEY `fk_client` (`client_id`),
+  CONSTRAINT `fk_client` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -110,12 +112,9 @@ DROP TABLE IF EXISTS `commandes`;
 CREATE TABLE `commandes` (
   `clients_id` int(11) NOT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `adresse_livraison_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_clients` (`clients_id`),
-  KEY `fk_commandesa` (`adresse_livraison_id`),
-  CONSTRAINT `fk_clients` FOREIGN KEY (`clients_id`) REFERENCES `clients` (`id`),
-  CONSTRAINT `fk_commandesa` FOREIGN KEY (`adresse_livraison_id`) REFERENCES `adresse_livraison` (`id`)
+  CONSTRAINT `fk_clients` FOREIGN KEY (`clients_id`) REFERENCES `clients` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -126,32 +125,6 @@ CREATE TABLE `commandes` (
 LOCK TABLES `commandes` WRITE;
 /*!40000 ALTER TABLE `commandes` DISABLE KEYS */;
 /*!40000 ALTER TABLE `commandes` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `commandes_chaussures`
---
-
-DROP TABLE IF EXISTS `commandes_chaussures`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `commandes_chaussures` (
-  `id_commandes` int(11) NOT NULL,
-  `id_chaussures` int(11) NOT NULL,
-  PRIMARY KEY (`id_commandes`,`id_chaussures`),
-  KEY `fk_chaussures` (`id_chaussures`),
-  CONSTRAINT `fk_chaussures` FOREIGN KEY (`id_chaussures`) REFERENCES `chaussures` (`id`),
-  CONSTRAINT `fk_commandesc` FOREIGN KEY (`id_commandes`) REFERENCES `commandes` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `commandes_chaussures`
---
-
-LOCK TABLES `commandes_chaussures` WRITE;
-/*!40000 ALTER TABLE `commandes_chaussures` DISABLE KEYS */;
-/*!40000 ALTER TABLE `commandes_chaussures` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -186,4 +159,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-09-03 22:56:10
+-- Dump completed on 2019-09-04  2:15:43
