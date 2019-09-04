@@ -15,7 +15,6 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-
 CREATE DATABASE IF NOT EXISTS `LaRedoute` DEFAULT CHARACTER SET = `utf8`;
 USE `LaRedoute`;
 
@@ -128,6 +127,32 @@ LOCK TABLES `commandes` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `commandes_chaussures`
+--
+
+DROP TABLE IF EXISTS `commandes_chaussures`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `commandes_chaussures` (
+  `id_commandes` int(11) NOT NULL,
+  `id_chaussures` int(11) NOT NULL,
+  PRIMARY KEY (`id_commandes`,`id_chaussures`),
+  KEY `pk_chaussures` (`id_chaussures`),
+  CONSTRAINT `pk_chaussures` FOREIGN KEY (`id_chaussures`) REFERENCES `chaussures` (`id`),
+  CONSTRAINT `pk_commandes` FOREIGN KEY (`id_commandes`) REFERENCES `commandes` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `commandes_chaussures`
+--
+
+LOCK TABLES `commandes_chaussures` WRITE;
+/*!40000 ALTER TABLE `commandes_chaussures` DISABLE KEYS */;
+/*!40000 ALTER TABLE `commandes_chaussures` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `marques`
 --
 
@@ -159,4 +184,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-09-04  2:15:43
+-- Dump completed on 2019-09-04 10:24:17
